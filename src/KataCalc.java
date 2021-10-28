@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -52,11 +51,10 @@ class ChkChar {
         String[] ValuesRomDigits = {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
         return Arrays.asList(ValuesRomDigits).contains(input);
     }
-    //
 }
 
 class RomanNumber {
-    //
+
     StringBuffer parsedIntegerOne = new StringBuffer(4);
     StringBuffer parsedIntegerTwo = new StringBuffer(4);
     char operator = ' ';
@@ -91,11 +89,10 @@ class RomanNumber {
         }
         return resCalc;
     }
-    //
 }
 
 class ArabNumber {
-    //
+
     StringBuffer parsedIntegerOne = new StringBuffer(2);
     StringBuffer parsedIntegerTwo = new StringBuffer(2);
     StringBuilder aggregateStr = new StringBuilder(9);
@@ -166,7 +163,7 @@ class ArabNumber {
 }
 
 class RomNumConverter {
-    //
+
     private final Map<String, Integer> numberByNumeral;
 
     public RomNumConverter() {
@@ -217,5 +214,4 @@ class RomNumConverter {
         return rightNumeralIntegerValue > leftNumeralIntegerValue ?
                 -1 * leftNumeralIntegerValue : leftNumeralIntegerValue;
     }
-    //
 }
