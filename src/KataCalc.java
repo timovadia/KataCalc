@@ -1,3 +1,4 @@
+
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -14,16 +15,11 @@ public class KataCalc {
         String inputString = scan.nextLine();
         inputString = inputString.replace(" ","");
 
-        ChkChar aChar = new ChkChar();
-        char fst = inputString.charAt(0);
-        if (aChar.isRomanDigit(fst)) {
-            RomanNumber romanNumber = new RomanNumber();
-            System.out.println(romanNumber.parsString(inputString));
-        } else if (aChar.isArabDigit(fst)) {
-            ArabNumber arabNumber = new ArabNumber();
-            System.out.println(arabNumber.parsString(inputString));
+        if (inputString.isEmpty()) {
+            System.err.println("throws Exception //т.к. пустая строка");
         } else {
-            System.err.println("throws Exception //т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+            CalcString calcString = new CalcString();
+            System.out.println(calcString.parsString(inputString));
         }
     }
 }
@@ -34,31 +30,31 @@ class ChkChar {
         return input == 'I' || input == 'V' || input == 'X';
     }
 
-    public boolean isArabDigit(char input){
-        return Character.isDigit(input);
-    }
-
     public boolean isOperator(char input){
         return input == '+' || input == '-' || input == '*' || input == '/';
     }
 
-    public boolean isValidNumber(String input){
-        int num = Integer.parseInt(input);
-        return num > 0 && num < 11;
+    public boolean isValidArabNumber(String input){
+        String[] ValuesArabDigits = {"1","2","3","4","5","6","7","8","9","10"};
+        return Arrays.asList(ValuesArabDigits).contains(input);
     }
 
-    public boolean isValidRoman(String input){
+    public boolean isValidRomanNumber(String input){
         String[] ValuesRomDigits = {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
         return Arrays.asList(ValuesRomDigits).contains(input);
     }
 }
 
-class RomanNumber {
+class CalcString {
 
     StringBuffer parsedIntegerOne = new StringBuffer(4);
     StringBuffer parsedIntegerTwo = new StringBuffer(4);
+    StringBuilder aggregateStr = new StringBuilder(9);
+
     char operator = ' ';
     boolean isSecondInt = false;
+    boolean isSecondOperator = false;
+
     ChkChar chkChar = new ChkChar();
     RomNumConverter romNumConverter = new RomNumConverter();
 
@@ -66,70 +62,70 @@ class RomanNumber {
 
         String resCalc = "";
 
-        for (int i = 0; i < inputString.length(); i++) {
-            char c = inputString.charAt(i);
-            if (chkChar.isRomanDigit(c) && !isSecondInt) {
-                parsedIntegerOne.append(c);
-            } else if (chkChar.isRomanDigit(c) && isSecondInt) {
-                parsedIntegerTwo.append(c);
+        try {
+            for (int i = 0; i < inputString.length(); i++) {
+                char strChar = inputString.charAt(i);
+                if ((Character.isDigit(strChar) || chkChar.isRomanDigit(strChar)) && !isSecondInt) {
+                    parsedIntegerOne.append(strChar);
+                    aggregateStr.append(strChar);
+                } else if ((Character.isDigit(strChar) || chkChar.isRomanDigit(strChar)) && isSecondInt) {
+                    parsedIntegerTwo.append(strChar);
+                    aggregateStr.append(strChar);
+                }
+                if (chkChar.isOperator(strChar) && !isSecondOperator) {
+                    operator = strChar;
+                    aggregateStr.append(strChar);
+                    isSecondInt = true;
+                    isSecondOperator = true;
+                }
             }
-            if (!Character.isDigit(c) && chkChar.isOperator(c)) {
-                operator = c;
-                isSecondInt = true;
-            }
+        } catch (NumberFormatException e){
+            System.err.println(e.getMessage());
         }
-        if (chkChar.isValidRoman(parsedIntegerOne.toString()) && chkChar.isValidRoman(parsedIntegerTwo.toString())) {
-            //convert to arab
-            int a = romNumConverter.convertRomNumToInteger(parsedIntegerOne.toString());
-            int b = romNumConverter.convertRomNumToInteger(parsedIntegerTwo.toString());
-            ArabNumber arabNumber = new ArabNumber();
-            int calc = arabNumber.MathCalc(a, b, operator);
-            resCalc = romNumConverter.convertIntToRomNum(calc);
 
-        }
-        return resCalc;
-    }
-}
-
-class ArabNumber {
-
-    StringBuffer parsedIntegerOne = new StringBuffer(2);
-    StringBuffer parsedIntegerTwo = new StringBuffer(2);
-    StringBuilder aggregateStr = new StringBuilder(9);
-
-    char operator = ' ';
-    boolean isSecondInt = false;
-    boolean isSecondOperator = false;
-    ChkChar chkChar = new ChkChar();
-
-    public String parsString (String inputString) {
-
-        String resCalc = "";
-
-        for (int i = 0; i < inputString.length(); i++) {
-            char c = inputString.charAt(i);
-            if (Character.isDigit(c) && !isSecondInt) {
-                parsedIntegerOne.append(c);
-                aggregateStr.append(c);
-            } else if (Character.isDigit(c) && isSecondInt) {
-                parsedIntegerTwo.append(c);
-                aggregateStr.append(c);
-            }
-            if (!Character.isDigit(c) && chkChar.isOperator(c) && !isSecondOperator) {
-                operator = c;
-                aggregateStr.append(c);
-                isSecondInt = true;
-                isSecondOperator = true;
-            }
-        }
         if (operator == ' ') {
             System.err.println("throws Exception //т.к. строка не является математической операцией");
             System.exit(0);
         } else {
+            //все ли числа и оператор распарсены?
             if (!aggregateStr.isEmpty() && !parsedIntegerOne.isEmpty() && !parsedIntegerTwo.isEmpty() && aggregateStr.toString().length() == inputString.length()) {
-                if (chkChar.isValidNumber(parsedIntegerOne.toString()) && chkChar.isValidNumber(parsedIntegerTwo.toString())) {
-                    int calc = MathCalc(Integer.parseInt(parsedIntegerOne.toString()), Integer.parseInt(parsedIntegerTwo.toString()), operator);
-                    resCalc = Integer.toString(calc);
+
+                //IntegerOne is it arabic?
+                if (chkChar.isValidArabNumber(parsedIntegerOne.toString())) {
+                    if (chkChar.isValidArabNumber(parsedIntegerTwo.toString())) {
+                        //calculate arabic
+                        int calc = MathCalc(Integer.parseInt(parsedIntegerOne.toString()), Integer.parseInt(parsedIntegerTwo.toString()), operator);
+                        resCalc = Integer.toString(calc);
+                    } else if (chkChar.isValidRomanNumber(parsedIntegerTwo.toString())) {
+                        System.err.println("throws Exception //т.к. используются одновременно разные системы счисления");
+                        System.exit(0);
+                    } else {
+                        System.err.println("throws Exception //т.к. введены неподходящие числа");
+                        System.exit(0);
+                    }
+                } else if (chkChar.isValidRomanNumber(parsedIntegerOne.toString())) {
+                    if (chkChar.isValidRomanNumber(parsedIntegerTwo.toString())) {
+                        //calculate roman
+                        //convert to arab
+                        int a = romNumConverter.convertRomNumToInteger(parsedIntegerOne.toString());
+                        int b = romNumConverter.convertRomNumToInteger(parsedIntegerTwo.toString());
+                        int calc = MathCalc(a, b, operator);
+                        if (calc > 0) {
+                            resCalc = romNumConverter.convertIntToRomNum(calc);
+                        } else {
+                            System.err.println("throws Exception //т.к. в римской системе нет нуля и отрицательных чисел");
+                            System.exit(0);
+                        }
+                    } else if (chkChar.isValidArabNumber(parsedIntegerTwo.toString())){
+                        System.err.println("throws Exception //т.к. используются одновременно разные системы счисления");
+                        System.exit(0);
+                    } else {
+                        System.err.println("throws Exception //т.к. введены неподходящие числа");
+                        System.exit(0);
+                    }
+                } else { //При вводе пользователем неподходящих чисел приложение выбрасывает исключение и завершает свою работу
+                    System.err.println("throws Exception //т.к. введены неподходящие числа");
+                    System.exit(0);
                 }
             } else {
                 System.err.println("throws Exception //т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
