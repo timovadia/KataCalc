@@ -1,7 +1,3 @@
-//////////////////////////////////////////
-//Тестовое задание калькулятор Java.
-//////////////////////////////////////////
-
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.LinkedHashMap;
