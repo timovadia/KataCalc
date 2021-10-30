@@ -6,6 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Arrays;
 
+/**
+ * This is implementation of the technical requirement -- console application Calculator.
+ *
+ * @author tim.berezin
+ * @version 1.0
+ */
 public class KataCalc {
 
     public static void main(String[] args) {
@@ -17,6 +23,7 @@ public class KataCalc {
 
         if (inputString.isEmpty()) {
             System.err.println("throws Exception //т.к. пустая строка");
+            System.exit(0);
         } else {
             CalcString calcString = new CalcString();
             System.out.println(calcString.parsString(inputString));
