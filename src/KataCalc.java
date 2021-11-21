@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, timovadia. All rights reserved. */
+ * Copyright (c) 2021, TimOvadia. All rights reserved. */
 
 import java.util.Scanner;
 import java.util.Collections;
@@ -98,7 +98,9 @@ class CalcString {
                 if (chkChar.isValidArabNumber(parsedIntegerOne.toString())) {
                     if (chkChar.isValidArabNumber(parsedIntegerTwo.toString())) {
                         //calculate arabic
-                        int calc = MathCalc(Integer.parseInt(parsedIntegerOne.toString()), Integer.parseInt(parsedIntegerTwo.toString()), operator);
+                        int calc = mathOperationsCalc(Integer.parseInt(parsedIntegerOne.toString()),
+                                                      Integer.parseInt(parsedIntegerTwo.toString()),
+                                                      operator);
                         resCalc = Integer.toString(calc);
                     } else if (chkChar.isValidRomanNumber(parsedIntegerTwo.toString())) {
                         System.err.println("throws Exception //т.к. используются одновременно разные системы счисления");
@@ -113,7 +115,7 @@ class CalcString {
                         //convert to arab
                         int a = romNumConverter.convertRomNumToInteger(parsedIntegerOne.toString());
                         int b = romNumConverter.convertRomNumToInteger(parsedIntegerTwo.toString());
-                        int calc = MathCalc(a, b, operator);
+                        int calc = mathOperationsCalc(a, b, operator);
                         if (calc > 0) {
                             resCalc = romNumConverter.convertIntToRomNum(calc);
                         } else {
@@ -139,7 +141,7 @@ class CalcString {
         return resCalc;
     }
 
-    public int MathCalc (int a, int b, char op) {
+    public int mathOperationsCalc (int a, int b, char op) {
         return switch (op) {
             case '+' -> a + b;
             case '-' -> a - b;
