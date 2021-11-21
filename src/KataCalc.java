@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2021, timovadia. All rights reserved. 
- */
+ * Copyright (c) 2021, timovadia. All rights reserved. */
 
 import java.util.Scanner;
 import java.util.Collections;
