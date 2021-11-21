@@ -212,7 +212,6 @@ class RomNumConverter {
     private Integer getIntegerValueFromAdjacentNumerals(String leftNumeral, String rightNumeral) {
         Integer leftNumeralIntegerValue = numberByNumeral.get(leftNumeral);
         int rightNumeralIntegerValue = "".equals(rightNumeral) ? 0 : numberByNumeral.get(rightNumeral);
-        return rightNumeralIntegerValue > leftNumeralIntegerValue ?
-                -1 * leftNumeralIntegerValue : leftNumeralIntegerValue;
+        return (rightNumeralIntegerValue > leftNumeralIntegerValue) ? -1 * leftNumeralIntegerValue : leftNumeralIntegerValue;
     }
 }
