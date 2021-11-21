@@ -16,12 +16,10 @@ import java.util.Arrays;
  * @version 1.0
  */
 public class KataCalc {
-
     public static void main(String[] args) {
-
         Scanner scan = new Scanner(System.in);
-
         String inputString = scan.nextLine();
+        
         inputString = inputString.replace(" ","");
 
         if (inputString.isEmpty()) {
@@ -35,28 +33,26 @@ public class KataCalc {
 }
 
 class ChkChar {
-
-    public boolean isRomanDigit(char input){
+    public boolean isRomanDigit(char input) {
         return input == 'I' || input == 'V' || input == 'X';
     }
-
-    public boolean isOperator(char input){
+    
+    public boolean isOperator(char input) {
         return input == '+' || input == '-' || input == '*' || input == '/';
     }
 
-    public boolean isValidArabNumber(String input){
-        String[] ValuesArabDigits = {"1","2","3","4","5","6","7","8","9","10"};
+    public boolean isValidArabNumber(String input) {
+        String[] ValuesArabDigits = { "1","2","3","4","5","6","7","8","9","10" };
         return Arrays.asList(ValuesArabDigits).contains(input);
     }
 
-    public boolean isValidRomanNumber(String input){
-        String[] ValuesRomDigits = {"I","II","III","IV","V","VI","VII","VIII","IX","X"};
+    public boolean isValidRomanNumber(String input) {
+        String[] ValuesRomDigits = { "I","II","III","IV","V","VI","VII","VIII","IX","X" };
         return Arrays.asList(ValuesRomDigits).contains(input);
     }
 }
 
 class CalcString {
-
     StringBuffer parsedIntegerOne = new StringBuffer(4);
     StringBuffer parsedIntegerTwo = new StringBuffer(4);
     StringBuilder aggregateStr = new StringBuilder(9);
@@ -69,7 +65,6 @@ class CalcString {
     RomNumConverter romNumConverter = new RomNumConverter();
 
     public String parsString (String inputString) {
-
         String resCalc = "";
 
         try {
@@ -126,7 +121,7 @@ class CalcString {
                             System.err.println("throws Exception //т.к. в римской системе нет нуля и отрицательных чисел");
                             System.exit(0);
                         }
-                    } else if (chkChar.isValidArabNumber(parsedIntegerTwo.toString())){
+                    } else if (chkChar.isValidArabNumber(parsedIntegerTwo.toString())) {
                         System.err.println("throws Exception //т.к. используются одновременно разные системы счисления");
                         System.exit(0);
                     } else {
@@ -154,6 +149,7 @@ class CalcString {
             default -> 0;
         };
     }
+    
     /*
     int MathCalc (int a, int b, char op) {
         int res = switch (op) {
@@ -169,9 +165,8 @@ class CalcString {
 }
 
 class RomNumConverter {
-
     private final Map<String, Integer> numberByNumeral;
-
+    
     public RomNumConverter() {
         Map<String, Integer> numberByNumeral = new LinkedHashMap<>();
         numberByNumeral.put("M", 1000);
